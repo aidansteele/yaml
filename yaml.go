@@ -37,6 +37,10 @@ type TagUnmarshaler interface {
 	UnmarshalYAMLTag(in string) interface{}
 }
 
+type TagMarshaler interface {
+	MarshalYAMLWithTag() (string, interface{}, error)
+}
+
 // The Marshaler interface may be implemented by types to customize their
 // behavior when being marshaled into a YAML document. The returned value
 // is marshaled in place of the original value implementing Marshaler.

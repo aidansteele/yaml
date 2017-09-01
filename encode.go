@@ -65,7 +65,18 @@ func (e *encoder) marshal(tag string, in reflect.Value) {
 		return
 	}
 	iface := in.Interface()
-	if m, ok := iface.(Marshaler); ok {
+	if m, ok := iface.(TagMarshaler); ok {
+		tag2, v, err := m.MarshalYAMLWithTag()
+		tag = tag2
+		if err != nil {
+			fail(err)
+		}
+		if v == nil {
+			e.nilv()
+			return
+		}
+		in = reflect.ValueOf(v)
+	} else if m, ok := iface.(Marshaler); ok {
 		v, err := m.MarshalYAML()
 		if err != nil {
 			fail(err)
